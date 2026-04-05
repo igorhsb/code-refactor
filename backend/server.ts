@@ -9,60 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// =====================
-// 🤖 GEMINI
-// =====================
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 const model = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash"
+  model: "gemini-2.5-flash",
 });
 
-// =====================
-// 🧰 TOOL REGISTRY
-// =====================
-type Tool = {
-  name: string;
-  description: string;
-  execute: (input?: any) => any;
-};
-
-const tools: Record<string, Tool> = {
-  sum: {
-    name: "sum",
-    description: "Sum two numbers (a + b)",
-    execute: ({ a, b }) => a + b
-  },
-  multiply: {
-    name: "multiply",
-    description: "Multiply two numbers (a * b)",
-    execute: ({ a, b }) => a * b
-  },
-  getCurrentDate: {
-    name: "getCurrentDate",
-    description: "Get current ISO date",
-    execute: () => new Date().toISOString()
-  }
-};
-
-// =====================
-// 🧠 MEMORY
-// =====================
-type MemoryItem = {
-  role: "user" | "agent";
-  content: string;
-};
-
-let memory: MemoryItem[] = [];
-
-function buildMemoryContext(memory: MemoryItem[]) {
-  return memory
-    .map(m => `${m.role.toUpperCase()}: ${m.content}`)
-    .join("\n");
-}
-
-// =====================
-// 🔐 SAFE PARSE
-// =====================
 function safeParse(text: string) {
   try {
     return JSON.parse(text);
@@ -73,20 +24,14 @@ function safeParse(text: string) {
   }
 }
 
-// =====================
-// 🤖 GEMINI CALL
-// =====================
 async function askGemini(prompt: string): Promise<string> {
   const result = await model.generateContent(prompt);
   const response = await result.response;
   return response.text();
 }
 
-// =====================
-// 🌐 STREAMING AGENT
-// =====================
 app.post("/agent-stream", async (req: Request, res: Response) => {
-  const { task } = req.body;
+  const { code, language } = req.body;
 
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
@@ -96,107 +41,174 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   }
 
-  const toolsDescription = Object.values(tools)
-    .map(t => `- ${t.name}: ${t.description}`)
-    .join("\n");
-
-  let context = `Task: ${task}`;
   let lastResult = "";
 
-  const memoryContext = buildMemoryContext(memory);
+  const promptText = `
+    Act as a Senior Tech Lead performing a professional code review and refactor.
 
-  for (let i = 0; i < 5; i++) {
-    const decision = await askGemini(`
-You are an autonomous AI agent.
+    Analyze and refactor the code in ${language} below focusing on high-quality software engineering practices.
 
-Available tools:
-${toolsDescription}
+    Mandatory criteria:
+    - Clean Code and readability
+    - Consistency and style standardization
+    - Separation of concerns
+    - Low coupling and high cohesion
+    - Clarity of intent (naming and abstractions)
+    - Maintainability and scalability
+    - Testability
+    - Avoid unnecessary complexity
+    - Performance (when applicable)
 
-Rules:
-- Respond ONLY in JSON
-- No text outside JSON
+    Rules:
+    - DO NOT change the original behavior
+    - Keep the solution simple and pragmatic
+    - Avoid overengineering
+    - Use modern best practices of the language/framework
 
-Formats:
-
-Tool:
-{
-  "action": "tool_name",
-  "input": {}
-}
-
-Continue:
-{
-  "action": "continue",
-  "thought": "reasoning"
-}
-
-Final:
-{
-  "action": "final",
-  "output": "answer"
-}
-
-Memory:
-${memoryContext}
-
-Context:
-${context}
-
-Last result:
-${lastResult}
-`);
-
-    send({ type: "raw", value: decision });
-
-    let parsed: any;
-
-    try {
-      parsed = safeParse(decision);
-    } catch {
-      send({ type: "error", value: decision });
-      return res.end();
+    Output format (STRICT JSON):
+    {
+      "diagnosis": [
+        {
+          "issue": "string",
+          "impact": "low | medium | high",
+          "explanation": "string"
+        }
+      ],
+      "refactored_code": "string",
+      "improvements": [
+        {
+          "title": "string",
+          "description": "string",
+          "related_criteria": ["string"]
+        }
+      ],
+      "future_suggestions": [
+        {
+          "title": "string",
+          "description": "string"
+        }
+      ]
     }
 
-    // 🧠 CONTINUE
-    if (parsed.action === "continue") {
-      send({ type: "thought", value: parsed.thought });
+    Guidelines:
+    - "diagnosis" should be objective and concise
+    - "refactored_code" must be complete and ready to use
+    - "improvements" must clearly map to the criteria
+    - "future_suggestions" should be optional but valuable
+    - Always return valid JSON (no comments, no extra text)
 
-      context += `\nThought: ${parsed.thought}`;
-      continue;
-    }
+    Code: ${code}
+    `;
 
-    // 🧰 TOOL EXECUTION
-    if (tools[parsed.action]) {
-      const result = tools[parsed.action].execute(parsed.input);
+  // const decision = await askGemini(promptText);
+  const example = {
+    diagnosis: [
+      {
+        issue: "Lack of proper formatting and spacing",
+        impact: "low",
+        explanation:
+          "The code is not properly formatted, making it harder to read and inconsistent with common style guides.",
+      },
+      {
+        issue: "Non-descriptive function and parameter naming",
+        impact: "medium",
+        explanation:
+          "The function name 'sum' and parameters 'a' and 'b' are too generic and do not clearly express intent.",
+      },
+      {
+        issue: "Missing type safety",
+        impact: "medium",
+        explanation:
+          "The function does not enforce types, which may lead to unexpected behavior in a TypeScript environment.",
+      },
+    ],
+    refactored_code:
+      "function sumNumbers(a: number, b: number): number {\n  return a + b;\n}",
+    improvements: [
+      {
+        title: "Improved readability and formatting",
+        description:
+          "Applied proper indentation and spacing to make the code easier to read.",
+        related_criteria: ["Clean Code", "Consistency"],
+      },
+      {
+        title: "Clearer naming",
+        description:
+          "Renamed function and parameters to better reflect their purpose.",
+        related_criteria: ["Clarity of intent", "Maintainability"],
+      },
+      {
+        title: "Added type safety",
+        description:
+          "Introduced TypeScript types to prevent incorrect usage and improve reliability.",
+        related_criteria: ["Testability", "Maintainability"],
+      },
+    ],
+    future_suggestions: [
+      {
+        title: "Add unit tests",
+        description:
+          "Create tests to validate behavior with different inputs, including edge cases.",
+      },
+      {
+        title: "Handle invalid inputs",
+        description:
+          "Consider validating inputs if this function is exposed to external data.",
+      },
+    ],
+  };
 
-      send({
-        type: "tool",
-        value: `${parsed.action} → ${result}`
-      });
-
-      lastResult = String(result);
-      context += `\nUsed ${parsed.action} → ${result}`;
-
-      continue;
-    }
-
-    // ✅ FINAL
-    if (parsed.action === "final") {
-      send({ type: "final", value: parsed.output });
-
-      memory.push({ role: "user", content: task });
-      memory.push({ role: "agent", content: parsed.output });
-
-      if (memory.length > 20) {
-        memory = memory.slice(-20);
-      }
-
-      return res.end();
-    }
-  }
-
-  send({ type: "final", value: "Max iterations reached" });
+  send(example);
   res.end();
+
+  //   let parsed: any;
+
+  //   try {
+  //     parsed = safeParse(decision);
+  //   } catch {
+  //     send({ type: "error", value: decision });
+  //     return res.end();
+  //   }
+
+  //   // 🧠 CONTINUE
+  //   if (parsed.action === "continue") {
+  //     send({ type: "thought", value: parsed.thought });
+
+  //     context += `\nThought: ${parsed.thought}`;
+  //     continue;
+  //   }
+
+  //   // 🧰 TOOL EXECUTION
+  //   if (tools[parsed.action]) {
+  //     const result = tools[parsed.action].execute(parsed.input);
+
+  //     send({
+  //       type: "tool",
+  //       value: `${parsed.action} → ${result}`
+  //     });
+
+  //     lastResult = String(result);
+  //     context += `\nUsed ${parsed.action} → ${result}`;
+
+  //     continue;
+  //   }
+
+  //   // ✅ FINAL
+  //   if (parsed.action === "final") {
+  //     send({ type: "final", value: parsed.output });
+
+  //     memory.push({ role: "user", content: task });
+  //     memory.push({ role: "agent", content: parsed.output });
+
+  //     if (memory.length > 20) {
+  //       memory = memory.slice(-20);
+  //     }
+
+  //     return res.end();
+  //   }
+  // }
+
+  // send({ type: "final", value: "Max iterations reached" });
 });
 
 // =====================

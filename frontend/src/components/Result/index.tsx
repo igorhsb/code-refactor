@@ -11,7 +11,7 @@ type CodeEditorProps = {
   onLanguageChange?: (lang: string) => void;
 };
 
-export default function CodeEditor({
+export default function Diagnosis({
   value,
   onChange,
   placeholder = "Escreva seu código aqui",

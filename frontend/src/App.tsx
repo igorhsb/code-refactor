@@ -1,13 +1,19 @@
 import { useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 
+type DiagnosisData = {
+  issue: string;
+  impact: string;
+  explanation: string;
+}
+
 function App() {
-  const [task, setTask] = useState("");
-  const [steps, setSteps] = useState<string[]>([]);
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
   const [result, setResult] = useState("");
+  const [diagnosis, setDiagnosis] = useState<DiagnosisData[]>([]);
 
   async function runAgent() {
-    setSteps([]);
     setResult("");
 
     const res = await fetch("http://localhost:3001/agent-stream", {
@@ -15,63 +21,49 @@ function App() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ task })
+      body: JSON.stringify({ code, language })
     });
-
     const reader = res.body?.getReader();
     const decoder = new TextDecoder();
 
     while (true) {
       const { done, value } = await reader!.read();
-      if (done) break;
+      if (done) {
+        console.log('done')
+        break
+      };
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split("\n\n");
+      const json = JSON.parse(chunk.replace("data: ", ""));
 
-      for (const line of lines) {
-        if (line.startsWith("data:")) {
-          const json = JSON.parse(line.replace("data: ", ""));
+      const resDiagnosis = json.diagnosis;
 
-          if (json.type === "final") {
-            setResult(json.value);
-          } else {
-            setSteps(prev => [...prev, `${json.type}: ${json.value}`]);
-          }
-        }
+      if (resDiagnosis?.length > 0) {
+        resDiagnosis.forEach( (diag : DiagnosisData) => {
+          setDiagnosis(prev => [...prev, diag]);
+        });
       }
+
+      console.log(diagnosis)
+      setResult(json.refactored_code);
     }
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="main-window">
       <h1>Code refactor</h1>
 
-      <CodeEditor />
-      
-      <textarea
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Ex: what is (10 + 5) + (3 * 2)"
-        rows={4}
-        style={{ width: "100%" }}
-        className=""
+      <CodeEditor 
+        value={code}
+        onChange={setCode}
+        onLanguageChange={setLanguage}
+        placeholder="// digite seu código..."
+        height="400px"
+        languageOptions={["javascript", "typescript", "html", "css", "json"]}
       />
 
       <br />
       <button onClick={runAgent}>Run</button>
-
-      <h3>Steps</h3>
-      <pre
-        style={{
-          background: "#111",
-          color: "#0f0",
-          padding: 10,
-          borderRadius: 8,
-          minHeight: 200
-        }}
-      >
-        {steps.join("\n\n")}
-      </pre>
 
       <h3>Result</h3>
       <pre>{result}</pre>
