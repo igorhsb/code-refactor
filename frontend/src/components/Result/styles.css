@@ -1,28 +1,23 @@
 .main-container {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 10px;
     width: 100%;
     align-items: center;
 }
 
-.editor-wrapper {
-    position: relative;
-    width: 100%;
+.refactored-code-container {
+    border: 2px solid green;
 }
 
-.placeholder {
-    position: absolute;
-    left: 65px;
-    color: green;
-    pointer-events: none;
-    font-size: 14px;
-    font-family: monospace;
-    z-index: 10;
+.future-suggestion-container {
+    border: 2px solid blue;
 }
 
-.select-language {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+.improvements-container {
+    border: 2px solid red;
+}
+
+.diagnosis-container {
+    border: 2px solid peru;
 }

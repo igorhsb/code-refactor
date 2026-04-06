@@ -79,10 +79,10 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
         {
           "title": "string",
           "description": "string",
-          "related_criteria": ["string"]
+          "relatedCriteria": ["string"]
         }
       ],
-      "future_suggestions": [
+      "futureSuggestions": [
         {
           "title": "string",
           "description": "string"
@@ -92,9 +92,9 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
 
     Guidelines:
     - "diagnosis" should be objective and concise
-    - "refactored_code" must be complete and ready to use
+    - "refactoredCode" must be complete and ready to use
     - "improvements" must clearly map to the criteria
-    - "future_suggestions" should be optional but valuable
+    - "futureSuggestions" should be optional but valuable
     - Always return valid JSON (no comments, no extra text)
 
     Code: ${code}
@@ -122,29 +122,29 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
           "The function does not enforce types, which may lead to unexpected behavior in a TypeScript environment.",
       },
     ],
-    refactored_code:
+    refactoredCode:
       "function sumNumbers(a: number, b: number): number {\n  return a + b;\n}",
     improvements: [
       {
         title: "Improved readability and formatting",
         description:
           "Applied proper indentation and spacing to make the code easier to read.",
-        related_criteria: ["Clean Code", "Consistency"],
+        relatedCriteria: ["Clean Code", "Consistency"],
       },
       {
         title: "Clearer naming",
         description:
           "Renamed function and parameters to better reflect their purpose.",
-        related_criteria: ["Clarity of intent", "Maintainability"],
+        relatedCriteria: ["Clarity of intent", "Maintainability"],
       },
       {
         title: "Added type safety",
         description:
           "Introduced TypeScript types to prevent incorrect usage and improve reliability.",
-        related_criteria: ["Testability", "Maintainability"],
+        relatedCriteria: ["Testability", "Maintainability"],
       },
     ],
-    future_suggestions: [
+    futureSuggestions: [
       {
         title: "Add unit tests",
         description:
