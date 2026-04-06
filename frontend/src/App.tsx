@@ -51,7 +51,6 @@ function App() {
       <br />
       <button onClick={runAgent}>Run</button>
 
-      <h3>Result</h3>
       {result && (
         <ResultData
           diagnosis={result?.diagnosis}
