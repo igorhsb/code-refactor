@@ -117,7 +117,7 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
       },
       {
         issue: "Missing type safety",
-        impact: "medium",
+        impact: "high",
         explanation:
           "The function does not enforce types, which may lead to unexpected behavior in a TypeScript environment.",
       },

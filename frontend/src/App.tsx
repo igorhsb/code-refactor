@@ -45,6 +45,7 @@ function App() {
         height="400px"
         languageOptions={["javascript", "typescript", "html", "css", "json"]}
         readOnly={false}
+        type="input"
       />
 
       <br />
@@ -56,7 +57,9 @@ function App() {
           diagnosis={result?.diagnosis}
           improvements={result?.improvements}
           refactoredCode={result?.refactoredCode}
+          code={code}
           futureSuggestions={result?.futureSuggestions}
+          language={language}
         />
       )}
     </div>

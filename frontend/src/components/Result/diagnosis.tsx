@@ -20,4 +20,6 @@ export type ResultDataProps = {
   improvements: ImprovementsData[];
   futureSuggestions: FutureSuggestionsData[];
   refactoredCode: string;
+  code: string;
+  language: string;
 };

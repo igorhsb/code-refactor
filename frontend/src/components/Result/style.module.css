@@ -22,18 +22,124 @@
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
+    gap: 10px;
 }
 
-.defaultContainer .title{
+.defaultContainerTitle {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.defaultContainerTitle .title{
     color: white;
     font-size: medium;
     margin: 0;
+}
+
+.defaultContainerEmphasis {
+    align-items: center;
+    border-radius: 20px;
+    padding: 2px 15px;
+    width: auto;
+    height: 100%;
+    font-size: 12px;
+}
+
+.defaultContainerEmphasis.defaultColor {
+    color: #8BB0E3;
+    background-color: #242F47;
+}
+
+.defaultContainerEmphasis.refactoredColor {
+    color: #86BDA5;
+    background-color: #203831;
 }
 
 .defaultContainer .subtitle{
     color: #AAAFBB;
     font-size: small;
     margin: 0;
+}
+
+.diagnosisContainer {
+    
+}
+
+.diagnosisItensContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.diagnosisItem {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #252934;
+    border: 1px solid #2F323E;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.diagnosisText {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    width: 100%;
+
+    p {
+        margin: 0;
+        padding: 0;
+        text-align: start;
+    }
+}
+
+.diagnosisIssue {
+    color: white;
+    font-size: 15px;
+}
+
+.diagnosisExplanation {
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.impact {
+    align-items: center;
+    border-radius: 20px;
+    padding: 2px 5px;
+    width: 100px;
+    font-size: 15px;
+}
+
+.impact.low {
+    color: rgb(19, 180, 19);
+    border: 1px solid rgb(19, 180, 19);
+    background-color: rgba(0, 128, 0, 0.6);
+}
+
+.impact.medium {
+    color: yellow;
+    border: 1px solid yellow;
+    background-color: rgba(255, 255, 0, 0.603);
+}
+
+.impact.high {
+    color: rgb(236, 55, 55);
+    border: 1px solid rgb(236, 55, 55);
+    background-color: rgba(255, 0, 0, 0.603);
 }
 
 .refactoredCodeContainer {
@@ -48,10 +154,6 @@
     border: 2px solid red;
 }
 
-.diagnosisContainer {
-    border: 2px solid peru;
-}
-
 .codeContainer {
     padding: 0;
     display: flex;
@@ -62,3 +164,4 @@
     box-sizing: border-box;
     gap: 10px;
 }
+

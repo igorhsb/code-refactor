@@ -5,12 +5,13 @@ import { Copy } from "lucide-react";
 
 type CodeEditorProps = {
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   height?: string;
   languageOptions: string[];
   onLanguageChange?: (lang: string) => void;
   readOnly?: boolean;
+  type?: string;
 };
 
 export default function CodeEditor({
@@ -20,7 +21,8 @@ export default function CodeEditor({
   height = "400px",
   languageOptions,
   onLanguageChange,
-  readOnly=false
+  readOnly = false,
+  type = "input",
 }: CodeEditorProps) {
   const [language, setLanguage] = useState("javascript");
   const [copied, setCopied] = useState(false);
@@ -34,15 +36,14 @@ export default function CodeEditor({
   }
 
   async function handleCopy() {
-  await navigator.clipboard.writeText(value);
-  setCopied(true);
-
-  setTimeout(() => setCopied(false), 2000);
-}
+    await navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.header}>
+    <div className={`${styles.mainContainer} ${styles[type]}`}>
+      <div className={`${styles.header} ${styles[type]}`}>
         <select
           disabled={readOnly}
           className={styles.selectLanguage}
@@ -54,10 +55,10 @@ export default function CodeEditor({
             </option>
           ))}
         </select>
-        <button 
-          className={styles.copyButton}
-          onClick={handleCopy}
-        > <Copy size={12}/> {copied ? "Copied!" : "Copy"} </button>
+        <button className={styles.copyButton} onClick={handleCopy}>
+          {" "}
+          <Copy size={12} /> {copied ? "Copied!" : "Copy"}{" "}
+        </button>
       </div>
       <div className={styles.editorWrapper}>
         {!value && <div className={styles.placeholder}>{placeholder}</div>}
@@ -71,7 +72,7 @@ export default function CodeEditor({
           options={{
             minimap: { enabled: false },
             fontSize: 14,
-            readOnly: readOnly
+            readOnly: readOnly,
           }}
         />
       </div>
