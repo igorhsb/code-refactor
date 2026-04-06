@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CodeEditor from "./components/CodeEditor";
+import CodeEditor from "./components/CodeEditor/codeEditor";
 import ResultData from "./components/Result/resultData";
 import type { ResultDataProps } from "./components/Result/diagnosis";
 
@@ -44,6 +44,7 @@ function App() {
         placeholder="// digite seu código..."
         height="400px"
         languageOptions={["javascript", "typescript", "html", "css", "json"]}
+        readOnly={false}
       />
 
       <br />

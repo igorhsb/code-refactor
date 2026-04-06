@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import "./styles.css";
+import styles from "./style.module.css";
 import type { ResultDataProps } from "./diagnosis";
 
 
@@ -11,43 +11,34 @@ export default function ResultData({
 }: ResultDataProps) {
 
   return (
-    <div className="main-container">
-      <div className="refactored-code-container">
-        <p>RefactoredCode</p>
-        {refactoredCode}
+    <div className={styles.mainContainer}>
+      <div className={styles.defaultContainer}>
+          <p className={styles.title}> 1. Diagnosis</p>
+          <p className={styles.subtitle}>Problems identified in your code:</p>
+        </div>
+      <div className={styles.codeContainer}>
+        <div className={styles.defaultContainer}>
+          <p className={styles.title}> 2. Original Code</p>
+          <p className={styles.subtitle}>The original code before refactoring:</p>
+          {refactoredCode}
+        </div>
+
+        <div className={styles.defaultContainer}>
+          <p className={styles.title}> 3. Refactored Code</p>
+          <p className={styles.subtitle}>Improved and type-safe version:</p>
+          {refactoredCode}
+        </div>
       </div>
-      <div className="diagnosis-container">
-        <p>Diagnosis</p>
-        {diagnosis.map((diag) => (
-          <Fragment>
-            impact: {diag.impact}
-            explanation: {diag.explanation}
-            issue: {diag.issue}
-          </Fragment>
-        ))}
-      </div>
-      <div className="improvements-container">
-        <p>Improvement</p>
-        {improvements.map((improv) => (
-          <Fragment>
-            <p>description: {improv.description}</p>
-            <p>title: {improv.title}</p>
-            <ul>
-              {improv.relatedCriteria.map((criteria) => (
-                <li>{criteria}</li>
-              ))}
-            </ul>
-          </Fragment>
-        ))}
-      </div>
-      <div className="future-suggestion-container">
-        <p>FutureSuggestions</p>
-        {futureSuggestions.map((suggestion) => (
-          <Fragment>
-            <p>description: {suggestion.description}</p>
-            <p>title: {suggestion.title}</p>
-          </Fragment>
-        ))}
+      <div className={styles.codeContainer}>
+        <div className={styles.defaultContainer}>
+          <p className={styles.title}> 4. Improvements</p>
+          <p className={styles.subtitle}>The original code before refactoring:</p>
+        </div>
+
+        <div className={styles.defaultContainer}>
+          <p className={styles.title}> 5. Futture Suggestions</p>
+          <p className={styles.subtitle}>Improved and type-safe version:</p>
+        </div>
       </div>
     </div>
   );
