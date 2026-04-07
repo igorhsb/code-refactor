@@ -47,8 +47,16 @@
     flex-direction: row;
     gap: 10px;
     padding: 10px;
-    border: 1px solid blueviolet;
     box-sizing: border-box;
+    border-radius: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.summaryIcon {
+    margin: 0;
+    padding: 5px 5px 0px 5px;
     border-radius: 10px;
 }
 
@@ -57,13 +65,73 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 5px;
     box-sizing: border-box;
 
     p {
         margin: 0;
         padding: 0;
         text-align: left;
+    }
+}
+
+.summaryTitle {
+    font-size: 10px;
+}
+
+.summaryNumber {
+    font-size: 15px;
+}
+
+.summaryButton.green{
+    border: 1px solid #315146;
+    background-color: #1B2A2C;
+
+    .summaryIcon {
+        background-color: #284A40;
+    }
+
+    .summaryNumber {
+        color: #74CD9E;
+    }
+}
+
+.summaryButton.blue{
+    border: 1px solid #354875;
+    background-color: #1F273D;
+
+    .summaryIcon {
+        background-color: #2C3A5C;
+    }
+
+    .summaryNumber {
+        color: #4762A8;
+    }
+}
+
+.summaryButton.purple{
+    border: 1px solid #5C5894;
+    background-color: #28263C;
+
+    .summaryIcon {
+        background-color: #423663;
+    }
+
+    .summaryNumber {
+        color: #C9A2F2;
+    }
+}
+
+.summaryButton.gray{
+    border: 1px solid #2D333F;
+    background-color: #1E232E;
+
+    .summaryIcon {
+        background-color: #393F4C;
+    }
+
+    .summaryTitle {
+        color: white;
+        font-size: 15px;
     }
 }
 
@@ -133,6 +201,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    max-height: 300px;
 }
 
 .diagnosisItem {
@@ -223,6 +293,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    max-height: 300px;
 }
 
 .improvementsItensContainer {
@@ -287,6 +359,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    height: 300px;
 }
 
 .futureSuggestionsItem {

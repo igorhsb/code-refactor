@@ -21,30 +21,40 @@ export default function ResultData({
         Review, understand and apply the improvements to your code
       </p>
       <div className={styles.summaryContainer}>
-        <div className={styles.summaryButton}>
-          <TriangleAlert size={35} fill="yellow" color="black" />
+        <div className={`${styles.summaryButton} ${styles.blue}`}>
+          <div className={`${styles.summaryIcon} ${styles.blue}`}>
+            <TriangleAlert size={30} color="#4762A8" />
+          </div>
           <div className={styles.summaryText}>
-            <p>{diagnosis.length}</p>
-            <p>Issue found</p>
+            <p className={styles.summaryNumber}>{diagnosis.length}</p>
+            <p className={styles.summaryTitle}>Issue found</p>
           </div>
         </div>
-        <div className={styles.summaryButton}>
-          <Lightbulb size={35} fill="green" color="black" />
+        <div className={`${styles.summaryButton} ${styles.green}`}>
+          <div className={`${styles.summaryIcon} ${styles.green}`}>
+          <Lightbulb size={30} color="#74CD9E" />
+          </div>
           <div className={styles.summaryText}>
-            <p>{improvements.length}</p>
-            <p>Improvements</p>
+            <p className={styles.summaryNumber}>{improvements.length}</p>
+            <p className={styles.summaryTitle}>Improvements</p>
           </div>
         </div>
-        <div className={styles.summaryButton}>
-          <TrendingUp size={35} fill="yellow" color="black" />
+        <div className={`${styles.summaryButton} ${styles.purple}`}>
+          <div className={`${styles.summaryIcon} ${styles.purple}`}>
+          <TrendingUp size={30} color="#C9A2F2" />
+          </div>
           <div className={styles.summaryText}>
-            <p>{futureSuggestions.length}</p>
-            <p>Future Suggestions</p>
+            <p className={styles.summaryNumber}>{futureSuggestions.length}</p>
+            <p className={styles.summaryTitle}>Future Suggestions</p>
           </div>
         </div>
-        <div className={styles.summaryButton}>
-          <ShieldCheck size={35} fill="yellow" color="black" />
-          Safe
+        <div className={`${styles.summaryButton} ${styles.gray}`}>
+          <div className={`${styles.summaryIcon} ${styles.gray}`}>
+            <ShieldCheck size={30} color="white" />
+          </div>
+          <div className={styles.summaryText}>
+            <p className={styles.summaryTitle}>Safe</p>
+          </div>
         </div>
       </div>
       <div
@@ -67,13 +77,11 @@ export default function ResultData({
               <div className={styles.diagnosisText}>
                 <p className={styles.diagnosisIssue}> {diag.issue} </p>
                 <p className={styles.diagnosisExplanation}>
-                  {" "}
-                  {diag.explanation}{" "}
+                  {diag.explanation}
                 </p>
               </div>
               <p className={`${styles.impact} ${styles[diag.impact]}`}>
-                {" "}
-                {diag.impact}{" "}
+                {diag.impact}
               </p>
             </div>
           ))}
