@@ -4,10 +4,14 @@
     gap: 10px;
     width: 100%;
     align-items: center;
-    background-color: #151925;
     padding: 40px !important;
     overflow: hidden;
     box-sizing: border-box;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.05), transparent 50%),
+    linear-gradient(135deg, #0f172a, #020617);
 }
 
 .resultTitle{
@@ -136,7 +140,6 @@
 }
 
 .defaultContainer {
-    background-color: #1E232E;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -148,6 +151,11 @@
     width: 100%;
     box-sizing: border-box;
     gap: 10px;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.05), transparent 50%),
+    linear-gradient(135deg, #1E232E, #1E232E);
 }
 
 .defaultContainerTitle {

@@ -1,20 +1,35 @@
 import styles from "./style.module.css";
-import type { ResultDataProps } from "./diagnosis";
-import CodeEditor from "../CodeEditor/codeEditor";
-import { CircleCheck, Lightbulb, ShieldCheck, Sparkle, Sparkles, TrendingUp, TriangleAlert } from "lucide-react";
+import CodeEditor from "../../components/CodeEditor/codeEditor";
+import {
+  CircleCheck,
+  Lightbulb,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  TriangleAlert,
+} from "lucide-react";
+import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-export default function ResultData({
-  diagnosis = [],
-  improvements = [],
-  refactoredCode = "",
-  code = "",
-  futureSuggestions = [],
-  language = "typescript",
-}: ResultDataProps) {
+export default function ResultData() {
+  const { code, language, result } = useAppContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!result) {
+      navigate("/");
+    }
+  }, [result, navigate]);
+
+  if (!result) {
+    return null;
+  }
+
   return (
     <div className={styles.mainContainer}>
       <p className={styles.resultTitle}>
-        <Sparkles size={30} fill="#5F87EA" color="#5F87EA"/>
+        <Sparkles size={30} fill="#5F87EA" color="#5F87EA" />
         Refactor Result
       </p>
       <p className={styles.resultSubtitle}>
@@ -26,25 +41,27 @@ export default function ResultData({
             <TriangleAlert size={30} color="#4762A8" />
           </div>
           <div className={styles.summaryText}>
-            <p className={styles.summaryNumber}>{diagnosis.length}</p>
+            <p className={styles.summaryNumber}>{result.diagnosis.length}</p>
             <p className={styles.summaryTitle}>Issue found</p>
           </div>
         </div>
         <div className={`${styles.summaryButton} ${styles.green}`}>
           <div className={`${styles.summaryIcon} ${styles.green}`}>
-          <Lightbulb size={30} color="#74CD9E" />
+            <Lightbulb size={30} color="#74CD9E" />
           </div>
           <div className={styles.summaryText}>
-            <p className={styles.summaryNumber}>{improvements.length}</p>
+            <p className={styles.summaryNumber}>{result.improvements.length}</p>
             <p className={styles.summaryTitle}>Improvements</p>
           </div>
         </div>
         <div className={`${styles.summaryButton} ${styles.purple}`}>
           <div className={`${styles.summaryIcon} ${styles.purple}`}>
-          <TrendingUp size={30} color="#C9A2F2" />
+            <TrendingUp size={30} color="#C9A2F2" />
           </div>
           <div className={styles.summaryText}>
-            <p className={styles.summaryNumber}>{futureSuggestions.length}</p>
+            <p className={styles.summaryNumber}>
+              {result.futureSuggestions.length}
+            </p>
             <p className={styles.summaryTitle}>Future Suggestions</p>
           </div>
         </div>
@@ -65,13 +82,13 @@ export default function ResultData({
           <div
             className={`${styles.defaultContainerEmphasis} ${styles.defaultColor}`}
           >
-            {diagnosis.length} issues found
+            {result.diagnosis.length} issues found
           </div>
         </div>
 
         <p className={styles.subtitle}>Problems identified in your code:</p>
         <div className={styles.diagnosisItensContainer}>
-          {diagnosis.map((diag) => (
+          {result.diagnosis.map((diag) => (
             <div className={styles.diagnosisItem}>
               <TriangleAlert size={35} fill="yellow" color="black" />
               <div className={styles.diagnosisText}>
@@ -120,7 +137,7 @@ export default function ResultData({
           </div>
           <p className={styles.subtitle}>Improved and type-safe version:</p>
           <CodeEditor
-            value={refactoredCode}
+            value={result.refactoredCode}
             height="200px"
             languageOptions={[language]}
             readOnly={true}
@@ -137,10 +154,10 @@ export default function ResultData({
             The original code before refactoring:
           </p>
           <div className={styles.improvementsContainer}>
-            {improvements.map((improvement) => (
+            {result.improvements.map((improvement) => (
               <div className={styles.improvementsItensContainer}>
                 <div className={styles.improvementsItem}>
-                  <CircleCheck size={35} fill="green" color="white"/>
+                  <CircleCheck size={35} fill="green" color="white" />
                   <div className={styles.improvementsText}>
                     <p className={styles.improvementsTitle}>
                       {" "}
@@ -171,18 +188,21 @@ export default function ResultData({
           </div>
           <p className={styles.subtitle}>Improved and type-safe version:</p>
           <div className={styles.futureSuggestionsContainer}>
-          {futureSuggestions.map((suggestion) => (
-            <div className={styles.futureSuggestionsItem}>
-              <Lightbulb size={45} fill="purple" color="white" />
-              <div className={styles.futureSuggestionsText}>
-                <p className={styles.futureSuggestionsTitle}> {suggestion.title} </p>
-                <p className={styles.futureSuggestionsDescription}>
-                  {suggestion.description}
-                </p>
+            {result.futureSuggestions.map((suggestion) => (
+              <div className={styles.futureSuggestionsItem}>
+                <Lightbulb size={45} fill="purple" color="white" />
+                <div className={styles.futureSuggestionsText}>
+                  <p className={styles.futureSuggestionsTitle}>
+                    {" "}
+                    {suggestion.title}{" "}
+                  </p>
+                  <p className={styles.futureSuggestionsDescription}>
+                    {suggestion.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
