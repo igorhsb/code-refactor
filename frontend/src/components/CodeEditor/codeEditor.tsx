@@ -12,6 +12,8 @@ type CodeEditorProps = {
   onLanguageChange?: (lang: string) => void;
   readOnly?: boolean;
   type?: string;
+  copyButtonLabel?: string;
+  copiedButtonLabel?: string;
 };
 
 export default function CodeEditor({
@@ -23,6 +25,8 @@ export default function CodeEditor({
   onLanguageChange,
   readOnly = false,
   type = "input",
+  copyButtonLabel = "Copy",
+  copiedButtonLabel = "Copied",
 }: CodeEditorProps) {
   const [language, setLanguage] = useState("javascript");
   const [copied, setCopied] = useState(false);
@@ -56,8 +60,7 @@ export default function CodeEditor({
           ))}
         </select>
         <button className={styles.copyButton} onClick={handleCopy}>
-          {" "}
-          <Copy size={12} /> {copied ? "Copied!" : "Copy"}{" "}
+          <Copy size={12} /> {copied ? copiedButtonLabel : copyButtonLabel}
         </button>
       </div>
       <div className={styles.editorWrapper}>

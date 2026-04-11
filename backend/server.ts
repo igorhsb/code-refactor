@@ -31,7 +31,7 @@ async function askGemini(prompt: string): Promise<string> {
 }
 
 app.post("/agent-stream", async (req: Request, res: Response) => {
-  const { code, language } = req.body;
+  const { code, language, userLanguage } = req.body;
 
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
@@ -100,7 +100,17 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
     Code: ${code}
     `;
 
-  // const decision = await askGemini(promptText);
+  // const response = await askGemini(promptText);
+  // let parsed: any;
+
+  // try {
+  //   parsed = safeParse(response);
+  //   send(parsed);
+  //   res.end();
+  // } catch {
+  //   send({ type: "error", value: response });
+  //   return res.end();
+  // }
   const example = {
     diagnosis: [
       {
@@ -160,55 +170,6 @@ app.post("/agent-stream", async (req: Request, res: Response) => {
 
   send(example);
   res.end();
-
-  //   let parsed: any;
-
-  //   try {
-  //     parsed = safeParse(decision);
-  //   } catch {
-  //     send({ type: "error", value: decision });
-  //     return res.end();
-  //   }
-
-  //   // 🧠 CONTINUE
-  //   if (parsed.action === "continue") {
-  //     send({ type: "thought", value: parsed.thought });
-
-  //     context += `\nThought: ${parsed.thought}`;
-  //     continue;
-  //   }
-
-  //   // 🧰 TOOL EXECUTION
-  //   if (tools[parsed.action]) {
-  //     const result = tools[parsed.action].execute(parsed.input);
-
-  //     send({
-  //       type: "tool",
-  //       value: `${parsed.action} → ${result}`
-  //     });
-
-  //     lastResult = String(result);
-  //     context += `\nUsed ${parsed.action} → ${result}`;
-
-  //     continue;
-  //   }
-
-  //   // ✅ FINAL
-  //   if (parsed.action === "final") {
-  //     send({ type: "final", value: parsed.output });
-
-  //     memory.push({ role: "user", content: task });
-  //     memory.push({ role: "agent", content: parsed.output });
-
-  //     if (memory.length > 20) {
-  //       memory = memory.slice(-20);
-  //     }
-
-  //     return res.end();
-  //   }
-  // }
-
-  // send({ type: "final", value: "Max iterations reached" });
 });
 
 // =====================

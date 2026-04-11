@@ -11,10 +11,13 @@ import {
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useLanguage } from "../../context/LanguageContext";
+import LanguageSelector from "../../components/LanguageSelector/languageSelector";
 
 export default function ResultData() {
   const { code, language, result } = useAppContext();
   const navigate = useNavigate();
+  const { userLanguage } = useLanguage();
 
   useEffect(() => {
     if (!result) {
@@ -26,15 +29,22 @@ export default function ResultData() {
     return null;
   }
 
+  console.log(userLanguage)
+
   return (
     <div className={styles.mainContainer}>
-      <p className={styles.resultTitle}>
-        <Sparkles size={30} fill="#5F87EA" color="#5F87EA" />
-        Refactor Result
-      </p>
-      <p className={styles.resultSubtitle}>
-        Review, understand and apply the improvements to your code
-      </p>
+      <div className={styles.header}>
+        <div className={styles.headerTitle}>
+        <p className={styles.resultTitle}>
+          <Sparkles size={30} fill="#5F87EA" color="#5F87EA" />
+          Refactor Result
+        </p>
+        <p className={styles.resultSubtitle}>
+          Review, understand and apply the improvements to your code
+        </p>
+        </div>
+        <LanguageSelector readOnly={true}/>
+      </div>
       <div className={styles.summaryContainer}>
         <div className={`${styles.summaryButton} ${styles.blue}`}>
           <div className={`${styles.summaryIcon} ${styles.blue}`}>
@@ -88,8 +98,8 @@ export default function ResultData() {
 
         <p className={styles.subtitle}>Problems identified in your code:</p>
         <div className={styles.diagnosisItensContainer}>
-          {result.diagnosis.map((diag) => (
-            <div className={styles.diagnosisItem}>
+          {result.diagnosis.map((diag, index) => (
+            <div className={styles.diagnosisItem} key={index}>
               <TriangleAlert size={35} fill="yellow" color="black" />
               <div className={styles.diagnosisText}>
                 <p className={styles.diagnosisIssue}> {diag.issue} </p>
@@ -154,8 +164,8 @@ export default function ResultData() {
             The original code before refactoring:
           </p>
           <div className={styles.improvementsContainer}>
-            {result.improvements.map((improvement) => (
-              <div className={styles.improvementsItensContainer}>
+            {result.improvements.map((improvement, index) => (
+              <div className={styles.improvementsItensContainer} key={index}>
                 <div className={styles.improvementsItem}>
                   <CircleCheck size={35} fill="green" color="white" />
                   <div className={styles.improvementsText}>
@@ -169,8 +179,9 @@ export default function ResultData() {
                   </div>
                 </div>
                 <div className={styles.improvementsCriteria}>
-                  {improvement.relatedCriteria.map((criteria) => (
+                  {improvement.relatedCriteria.map((criteria, index) => (
                     <div
+                      key={index}
                       className={`${styles.defaultContainerEmphasis} ${styles.defaultColor}`}
                     >
                       {criteria}
@@ -188,8 +199,8 @@ export default function ResultData() {
           </div>
           <p className={styles.subtitle}>Improved and type-safe version:</p>
           <div className={styles.futureSuggestionsContainer}>
-            {result.futureSuggestions.map((suggestion) => (
-              <div className={styles.futureSuggestionsItem}>
+            {result.futureSuggestions.map((suggestion, index) => (
+              <div className={styles.futureSuggestionsItem} key={index}>
                 <Lightbulb size={45} fill="purple" color="white" />
                 <div className={styles.futureSuggestionsText}>
                   <p className={styles.futureSuggestionsTitle}>
