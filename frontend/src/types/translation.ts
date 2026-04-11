@@ -1,3 +1,14 @@
+type sectionText = {
+  title: string;
+  subtitle: string;
+  extraLabel?: string;
+}
+
+type impactText = {
+  identifier: string;
+  value: string;
+}
+
 export type TranslationSchema = {
   input: {
     title: string;
@@ -10,7 +21,12 @@ export type TranslationSchema = {
   };
   result: {
     title: string;
-    originalCode: string;
-    refactoredCode: string;
+    originalCode: sectionText;
+    refactoredCode: sectionText;
+    subtitle: string;
+    diagnosis: sectionText;
+    improvements: sectionText;
+    futtureSuggestion: sectionText;
+    impact: impactText[];
   };
 };

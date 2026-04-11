@@ -13,11 +13,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import LanguageSelector from "../../components/LanguageSelector/languageSelector";
+import { useTranslation } from "../../hooks/useTranslation";
 
 export default function ResultData() {
   const { code, language, result } = useAppContext();
   const navigate = useNavigate();
   const { userLanguage } = useLanguage();
+  const t = useTranslation();
 
   useEffect(() => {
     if (!result) {
@@ -29,6 +31,12 @@ export default function ResultData() {
     return null;
   }
 
+  function getImpactTranslateValue(identifier: string) {
+    return t.result.impact.find(imp => {
+      return imp.identifier === identifier
+    })?.value
+  }
+
   console.log(userLanguage)
 
   return (
@@ -37,10 +45,10 @@ export default function ResultData() {
         <div className={styles.headerTitle}>
         <p className={styles.resultTitle}>
           <Sparkles size={30} fill="#5F87EA" color="#5F87EA" />
-          Refactor Result
+          {t.result.title}
         </p>
         <p className={styles.resultSubtitle}>
-          Review, understand and apply the improvements to your code
+          {t.result.subtitle}
         </p>
         </div>
         <LanguageSelector readOnly={true}/>
@@ -52,7 +60,7 @@ export default function ResultData() {
           </div>
           <div className={styles.summaryText}>
             <p className={styles.summaryNumber}>{result.diagnosis.length}</p>
-            <p className={styles.summaryTitle}>Issue found</p>
+            <p className={styles.summaryTitle}>{t.result.diagnosis.extraLabel}</p>
           </div>
         </div>
         <div className={`${styles.summaryButton} ${styles.green}`}>
@@ -61,7 +69,7 @@ export default function ResultData() {
           </div>
           <div className={styles.summaryText}>
             <p className={styles.summaryNumber}>{result.improvements.length}</p>
-            <p className={styles.summaryTitle}>Improvements</p>
+            <p className={styles.summaryTitle}>{t.result.improvements.title}</p>
           </div>
         </div>
         <div className={`${styles.summaryButton} ${styles.purple}`}>
@@ -72,7 +80,7 @@ export default function ResultData() {
             <p className={styles.summaryNumber}>
               {result.futureSuggestions.length}
             </p>
-            <p className={styles.summaryTitle}>Future Suggestions</p>
+            <p className={styles.summaryTitle}>{t.result.futtureSuggestion.title}</p>
           </div>
         </div>
         <div className={`${styles.summaryButton} ${styles.gray}`}>
@@ -88,15 +96,15 @@ export default function ResultData() {
         className={`${styles.defaultContainer} ${styles.diagnosisContainer}`}
       >
         <div className={styles.defaultContainerTitle}>
-          <p className={styles.title}>1. Diagnosis</p>
+          <p className={styles.title}>1. {t.result.diagnosis.title}</p>
           <div
             className={`${styles.defaultContainerEmphasis} ${styles.defaultColor}`}
           >
-            {result.diagnosis.length} issues found
+            {result.diagnosis.length} {t.result.diagnosis.extraLabel}
           </div>
         </div>
 
-        <p className={styles.subtitle}>Problems identified in your code:</p>
+        <p className={styles.subtitle}>{t.result.diagnosis.subtitle}</p>
         <div className={styles.diagnosisItensContainer}>
           {result.diagnosis.map((diag, index) => (
             <div className={styles.diagnosisItem} key={index}>
@@ -108,7 +116,7 @@ export default function ResultData() {
                 </p>
               </div>
               <p className={`${styles.impact} ${styles[diag.impact]}`}>
-                {diag.impact}
+                {getImpactTranslateValue(diag.impact)}
               </p>
             </div>
           ))}
@@ -117,15 +125,15 @@ export default function ResultData() {
       <div className={styles.codeContainer}>
         <div className={styles.defaultContainer}>
           <div className={styles.defaultContainerTitle}>
-            <p className={styles.title}>2. Original Code</p>
+            <p className={styles.title}>2. {t.result.originalCode.title}</p>
             <div
               className={`${styles.defaultContainerEmphasis} ${styles.defaultColor}`}
             >
-              Input
+              {t.result.originalCode.extraLabel}
             </div>
           </div>
           <p className={styles.subtitle}>
-            The original code before refactoring:
+            {t.result.originalCode.subtitle}
           </p>
           <CodeEditor
             value={code}
@@ -138,14 +146,14 @@ export default function ResultData() {
 
         <div className={styles.defaultContainer}>
           <div className={styles.defaultContainerTitle}>
-            <p className={styles.title}> 3. Refactored Code</p>
+            <p className={styles.title}> 3. {t.result.refactoredCode.title}</p>
             <div
               className={`${styles.defaultContainerEmphasis} ${styles.refactoredColor}`}
             >
-              Refactored
+              {t.result.refactoredCode.extraLabel}
             </div>
           </div>
-          <p className={styles.subtitle}>Improved and type-safe version:</p>
+          <p className={styles.subtitle}>{t.result.refactoredCode.subtitle}</p>
           <CodeEditor
             value={result.refactoredCode}
             height="200px"
