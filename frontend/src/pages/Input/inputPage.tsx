@@ -3,11 +3,10 @@ import { useState } from "react";
 import CodeEditor from "../../components/CodeEditor/codeEditor";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import { Atom } from "lucide-react";
 import { useAgentStream } from "../../hooks/useAgentStream";
-import LanguageSelector from "../../components/LanguageSelector/languageSelector";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTranslation } from "../../hooks/useTranslation";
+import PageHeader from "../../components/PageHeader/pageHeader";
 
 export default function InputPage() {
   const navigate = useNavigate();
@@ -52,19 +51,7 @@ export default function InputPage() {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.header}>
-        <div className={styles.headerTitle}>
-          <Atom size={35} color="#5E8BF4" />
-          <p>
-            <span>{t.input.title}</span>
-          </p>
-        </div>
-        <div className={styles.headerLinks}>
-          <a>{t.input.about}</a>
-          <a>{t.input.contact}</a>
-          <LanguageSelector readOnly={false}/>
-        </div>
-      </div>
+      <PageHeader/>
       <div className={styles.container}>
         <CodeEditor
           value={localCode}

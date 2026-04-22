@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import LanguageSelector from "../../components/LanguageSelector/languageSelector";
 import { useTranslation } from "../../hooks/useTranslation";
+import PageHeader from "../../components/PageHeader/pageHeader";
 
 export default function ResultData() {
   const { code, language, result } = useAppContext();
@@ -40,6 +41,8 @@ export default function ResultData() {
   console.log(userLanguage)
 
   return (
+    <div>
+      <PageHeader/>
     <div className={styles.mainContainer}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>
@@ -224,6 +227,7 @@ export default function ResultData() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
