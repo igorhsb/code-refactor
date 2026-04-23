@@ -49,4 +49,12 @@ export const es = {
       },
     ]
   },
+  about: {
+    title: "Acerca de",
+    text: "Acerca de..."
+  },
+  contact: {
+    title: "Contacto",
+    text: "Contacto..."
+  }
 };

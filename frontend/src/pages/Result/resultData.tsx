@@ -12,7 +12,6 @@ import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useLanguage } from "../../context/LanguageContext";
-import LanguageSelector from "../../components/LanguageSelector/languageSelector";
 import { useTranslation } from "../../hooks/useTranslation";
 import PageHeader from "../../components/PageHeader/pageHeader";
 
@@ -42,7 +41,7 @@ export default function ResultData() {
 
   return (
     <div>
-      <PageHeader/>
+      <PageHeader canChangeLanguage={false}/>
     <div className={styles.mainContainer}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>
@@ -54,7 +53,6 @@ export default function ResultData() {
           {t.result.subtitle}
         </p>
         </div>
-        <LanguageSelector readOnly={true}/>
       </div>
       <div className={styles.summaryContainer}>
         <div className={`${styles.summaryButton} ${styles.blue}`}>

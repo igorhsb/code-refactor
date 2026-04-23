@@ -2,12 +2,12 @@ type sectionText = {
   title: string;
   subtitle: string;
   extraLabel?: string;
-}
+};
 
 type impactText = {
   identifier: string;
   value: string;
-}
+};
 
 export type TranslationSchema = {
   input: {
@@ -28,5 +28,13 @@ export type TranslationSchema = {
     improvements: sectionText;
     futtureSuggestion: sectionText;
     impact: impactText[];
+  };
+  about: {
+    title: string;
+    text: string;
+  };
+  contact: {
+    title: string;
+    text: string;
   };
 };

@@ -9,6 +9,11 @@
     padding: 15px 100px;
     box-sizing: border-box;
     height: 80px;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.05), transparent 50%),
+    linear-gradient(135deg, #0f172a, #020617);
 }
 
 .headerTitle {
@@ -36,11 +41,12 @@
     align-items: center;
     justify-content: flex-start;
 
-    a {
+    .link {
         margin: 0;
         padding: 0;
         font-size: 15px;
         color: gray;
+        text-decoration: none;
     }
 }
 

@@ -20,8 +20,8 @@ export default function PageHeader({canChangeLanguage = true}: PageHeaderProps) 
         </p>
       </div>
       <div className={styles.headerLinks}>
-        <Link to="/about">{t.input.about}</Link>
-        <Link to="/contact">{t.input.contact}</Link>
+        <Link className={styles.link} to="/about">{t.input.about}</Link>
+        <Link className={styles.link} to="/contact">{t.input.contact}</Link>
         <LanguageSelector readOnly={!canChangeLanguage} />
       </div>
     </div>

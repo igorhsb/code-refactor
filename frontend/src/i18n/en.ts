@@ -49,4 +49,12 @@ export const en = {
       },
     ]
   },
+  about: {
+    title: "About",
+    text: "This is about..."
+  },
+  contact: {
+    title: "Contact",
+    text: "Contact..."
+  }
 };
